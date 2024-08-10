@@ -221,6 +221,9 @@
 		.tim:active{
 			transform: scale(0.95) translateX(-52.5%);
 		}
+		.tim:hover{
+			color: rgb(50, 50, 50);
+		}
 		.select{
             outline: none;
             border: none;
@@ -253,6 +256,7 @@
 			border-radius: 7px;
 			position: absolute;
 			left: -350px;
+			box-shadow: 0 0 15px black;
 		}
 		.menuop{
 			width: 100%;
@@ -278,12 +282,13 @@
 			color: white;
 			border: none;
 			border-radius: 80px;
-			background: rgba(255, 255, 255, .3);
+			background: rgba(0, 0, 255, .38);
 			transition: 0.3s all;
 			outline: none;
 		}
 		.btn1:hover{
-			background: rgba(255, 255, 255, .69)
+			background: rgba(30, 30, 255, .69);
+			box-shadow: 0 0 23px skyblue;
 		}
 		.btn1:active{
 			transform: scale(0.9);
@@ -360,9 +365,9 @@
 		footer a{
 			text-decoration: none;
 			color: white;
-			text-shadow: 0 0 5px black;
 			display: inline-block;
 			cursor: pointer;
+			transition: 0.3s all;
 		}
 		footer p{
 			display: inline-block;
@@ -373,21 +378,38 @@
 			color: white;
 		}
 		footer a:active{
-			color: gray;
+			color: rgb(160, 160, 160);
 		}
 		.about{
 			z-index: 999999;
 			display: inline-block;
 			border: none;
 			border-radius: 10px;
-			background: rgba(255, 255, 255, .85);
+			background: rgba(255, 255, 255, .89);
 			box-shadow: 0 0 15px black;
 			text-align: center;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
-			width: 300px;
+			transition: 0.3s all;
+			width: 500px;
+			opacity: 0;
+		}
+		.textb{
+			z-index: 999999;
+			display: inline-block;
+			border: none;
+			border-radius: 10px;
+			background: rgba(255, 255, 255, .93);
+			box-shadow: 0 0 15px black;
+			text-align: center;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			transition: 0.3s all;
+			opacity: 0;
 		}
 		@media screen and (max-width: 768px){
 			#dv{
@@ -513,7 +535,7 @@
 	</div>
     <div id="dv" style="display: none;transition: 0.36s all;">
         <input type="file" style="display: none;" id="ipt" onchange="setCstImg(event);"><br><br>
-        <h1 id="time" class="tim" onclick="swch();">00:00</h1><br><br><br><br><br>
+        <h1 id="time" class="tim" onclick="swch();" title="点击切换页面">00:00</h1><br><br><br><br><br>
 		<div id="page1" class="tstn" style="z-index: 1;">
 			<center>
 				<form onsubmit='return search()'>
@@ -540,14 +562,14 @@
 		<div id="about" class="about" style="display: none;">
 			<button class="setting_btn" style="border-radius: 10px;width: 30px;height: 30px;font-size: 1em;" onclick="closeabt();">×</button>
 			<h1 style="color: lightblue;">XXX起始页</h1>
-			<p>本网站是XXX的XXX起始页</p><br>
-			<p>本网站是XXXX年XX月XX日上线的</p><br><br>
-			<p>感谢您访问XXX起始页！</p>
+			<p>本网站是XXX的XXXX年XX月XX日上线的XXX起始页</p><br><br>
+			<p>感谢您访问XXX起始页！</p><br><br><br>
+			<p>小提示：点击时间切换页面</p>
 		</div>
-		<div id="textb" class="about" style="display: none;width: auto;height: auto;">
+		<div id="textb" class="textb" style="display: none;">
 			<button class="setting_btn" style="border-radius: 10px;width: 30px;height: 30px;font-size: 1em;" onclick="closetextb();">×</button>
 			<h1 style="color: lightblue;">记事本</h1>
-			<textarea style="resize: none;width: 600px;height: 380px;outline: none;background-color: transparent;white-space: nowrap;" placeholder="输入内容..." id="textarea"></textarea><br>
+			<textarea style="resize: none;width: 600px;height: 380px;border: none;outline: none;background: rgba(190, 190, 290, .2);white-space: nowrap;" placeholder="输入内容..." id="textarea"></textarea><br>
 			<button class="save" onclick="savetext();">保存</button><br><br>
 		</div>
         <script>
@@ -681,15 +703,24 @@
 			var pg1 = $('page1');
 			var pg2 = $('page2');
 			let pg = 1;
+			let isok = 1;
 			function to_page1(){
-				pg1.style="display: inline-block;;z-index: 2;";
-				pg2.style="display: none;z-index: 0;";
-				pg = 1;
+				if (isok){
+					isok = 0;
+					pg1.style="display: inline-block;opacity: 1;z-index: 2;";
+					pg2.style="opacity: 0;z-index: 0;";
+					pg = 1;
+					setTimeout(function(){pg2.style="display: none;";isok=1;}, 300);
+				}
 			}
 			function to_page2(){
-				pg1.style="display: none;z-index: 0;";
-				pg2.style="display: inline-block;z-index: 2;";
-				pg = 2;
+				if (isok){
+					isok = 0;
+					pg1.style="opacity: 0;z-index: 0;";
+					pg2.style="display: inline-block;z-index: 2;opacity: 1;";
+					pg = 2;
+					setTimeout(function(){pg1.style="display: none;";isok=1;}, 300);
+				}
 			}
 			function swch(){
 				if (pg==1){
@@ -700,18 +731,32 @@
 				}
 			}
 			var about = $('about');
+			var abt = 0;
 			function openabt(){
-				about.style.display = "inline-block";
+				if (!abt){
+					about.style = "display: inline-block;";
+					setTimeout(function(){about.style="opacity: 1;";}, 300);
+					abt = 1;
+				}
 			}
 			function closeabt(){
-				about.style.display = "none";
+				about.style="opacity: 0;";
+				setTimeout(function(){about.style.display = "none";}, 300);
+				abt = 0;
 			}
 			var textb = $('textb');
+			var txtb = 0;
 			function opentextb(){
-				textb.style.display = "inline-block";
+				if (!txtb){
+					textb.style.display = "inline-block";
+					setTimeout(function(){textb.style="opacity: 1;";}, 300);
+					txtb = 1;
+				}
 			}
 			function closetextb(){
-				textb.style.display = "none";
+				textb.style="opacity: 0;";
+				setTimeout(function(){textb.style.display = "none";}, 300);
+				txtb = 0;
 			}
 			function savetext(){
 				try{
